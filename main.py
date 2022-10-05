@@ -23,18 +23,6 @@ async def send_welcome(message: types.Message):
     await message.reply("Привет👋\nКем вы являетесь?", reply_markup=keyboardStart)
 
 
-@dp.message_handler()
-async def echo(message: types.Message):
-    if message.text == 'Учитель':
-        check_lab_teatcher = KeyboardButton('Просмотр лабораторных работ')
-        change_lab_teatcher = KeyboardButton('Изменение лабораторных работ')
-        add_evaluation_teatcher = KeyboardButton('Добавить (изменить) оценку ученику')
-        back = KeyboardButton('Назад')
-        button_teatcher = ReplyKeyboardMarkup().add(check_lab_teatcher).add(change_lab_teatcher).add(add_evaluation_teatcher).add(back)
-        await message.reply("", reply_markup=button_teatcher)
-
-    elif message.text == 'Студент':
-        await message.reply("", reply_markup=types.ReplyKeyboardRemove())
 
 
 if __name__ == '__main__':
