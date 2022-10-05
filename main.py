@@ -2,8 +2,6 @@ from auth import TOKEN
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, reply_keyboard
 
-#Семихвостов
-
 API_TOKEN = TOKEN
 
 # Инициальзация бота
