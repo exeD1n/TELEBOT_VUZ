@@ -3,7 +3,7 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, reply_keyboard
 
 API_TOKEN = TOKEN
-
+# я изменил
 # Инициальзация бота
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
