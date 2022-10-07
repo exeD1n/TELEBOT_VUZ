@@ -1,12 +1,10 @@
 # Подключение к базе данных
-# Попытка от Егора
-from select import select
 import pymysql
 
 mySQLServer = 'localhost'
-myDataBase = 'sakila'
+myDataBase = 'pythonbot'
 user = 'root'
-passwodr = 'ForprojectPguty'
+passwodr = ''
 try:
     connection = pymysql.connect(
         host = mySQLServer,
@@ -21,12 +19,12 @@ try:
 
     try:
         with connection.cursor() as cursor:
-            # select_all_rows = "SELECT * FROM actor;"
-            # cursor.execute(select_all_rows)
-            # rows = cursor.fetchall()
-            # for row in rows:
-            #     print(row)
-            # print("#" * 20)
+            select_all_rows = "SELECT * FROM Subject;"
+            cursor.execute(select_all_rows)
+            rows = cursor.fetchall()
+            for row in rows:
+                print(row)
+            print("#" * 20)
     finally:
         connection.close()
 
