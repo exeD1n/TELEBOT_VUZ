@@ -2,7 +2,7 @@
 import pymysql
 
 mySQLServer = 'localhost'
-myDataBase = 'pythonbot'
+myDataBase = 'PgutyBot'
 user = 'root'
 passwodr = ''
 try:
@@ -15,16 +15,15 @@ try:
         cursorclass = pymysql.cursors.DictCursor
         )
     print('succesfully conneted')
-    print("#" * 20)
 
     try:
         with connection.cursor() as cursor:
-            select_all_rows = "SELECT * FROM Subject;"
+            select_all_rows = "SELECT * FROM Rating;"
             cursor.execute(select_all_rows)
             rows = cursor.fetchall()
             for row in rows:
-                print(row)
-            print("#" * 20)
+                if row['idSubject'] == 1 and row['name_group']=='ИВТ26у':
+                    print(row)
     finally:
         connection.close()
 
