@@ -2,7 +2,7 @@
 import pymysql
 
 mySQLServer = 'localhost'
-myDataBase = 'pythonbot'
+myDataBase = 'PgutyBot'
 user = 'root'
 passwodr = ''
 try:
