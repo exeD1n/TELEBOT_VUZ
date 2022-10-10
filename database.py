@@ -21,9 +21,16 @@ try:
             select_all_rows = "SELECT * FROM Rating;"
             cursor.execute(select_all_rows)
             rows = cursor.fetchall()
+            s = []
             for row in rows:
-                if row['idSubject'] == 1 and row['name_group']=='ИВТ26у':
-                    print(row)
+                print(row['name_group'])
+                s.append(row['name_group'])
+            n = []
+            for i in s:
+                if i not in n:
+                    n.append(i)
+            print(n)
+                    
     finally:
         connection.close()
 
