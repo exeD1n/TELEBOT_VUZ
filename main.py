@@ -23,7 +23,7 @@ async def send_welcome(message: types.Message):
         keyboard=kb,
         resize_keyboard=True
     )
-    await message.reply(f'Привет {message.from_user.full_name} 👋\nКем вы являетесь?', reply_markup=keyboardStart)
+    await message.answer(f'Привет {message.from_user.full_name} 👋\nКем вы являетесь?', reply_markup=keyboardStart)
 
 # # Кнопка 'Учитель' 
 # @dp.message_handler(text = "Учитель")
@@ -141,7 +141,9 @@ async def command_student(message:types.Message):
     #     keyboard=kb_student,
     #     resize_keyboard=True
     # )
-    await message.answer('Что вас интересует?', reply_markup=builder)
+    await message.answer('В какой группе вы учитесь?', reply_markup=builder)
+    
+    
 #Кнопка Мои практические    
 @dp.message_handler(text = 'Мои практические')
 async def command_praks(message: types.Message):
@@ -158,82 +160,82 @@ async def command_praks(message: types.Message):
             resize_keyboard=True
         )
         await message.answer('Что вы хотите сделать', reply_markup=keyboardPaktics)
-#Кнопка Мои лабораторные    
-@dp.message_handler(text = 'Мои лабораторные')
-async def command_labs(message: types.Message):
-        kb_labs = [
-            [
-            types.KeyboardButton(text='Список работ')
-            ],
-            [
-            types.KeyboardButton(text='Меню')    
-            ]
-        ]
-        keyboardLabs = types.ReplyKeyboardMarkup(
-            keyboard=kb_labs,
-            resize_keyboard=True
-        )
-        await message.answer('Что вы хотите сделать', reply_markup=keyboardLabs) 
-#Кнопка Список лекций    
-@dp.message_handler(text = 'Список лекций')
-async def command_lekcs(message: types.Message):
+# #Кнопка Мои лабораторные    
+# @dp.message_handler(text = 'Мои лабораторные')
+# async def command_labs(message: types.Message):
+#         kb_labs = [
+#             [
+#             types.KeyboardButton(text='Список работ')
+#             ],
+#             [
+#             types.KeyboardButton(text='Меню')    
+#             ]
+#         ]
+#         keyboardLabs = types.ReplyKeyboardMarkup(
+#             keyboard=kb_labs,
+#             resize_keyboard=True
+#         )
+#         await message.answer('Что вы хотите сделать', reply_markup=keyboardLabs) 
+# #Кнопка Список лекций    
+# @dp.message_handler(text = 'Список лекций')
+# async def command_lekcs(message: types.Message):
         
-        kb_lekcs = [
-            [
-                types.KeyboardButton(text='Математика'),
-                types.KeyboardButton(text='Русский язык'), 
-                types.KeyboardButton(text='Программирование')
-            ],
-            [
-                types.KeyboardButton(text='Информатика'),
-                types.KeyboardButton(text='1С'),
-                types.KeyboardButton(text='Базы данных')
-            ],
-            [
-            types.KeyboardButton(text='Меню')    
-            ]
-        ]
-        keyboardLekcs = types.ReplyKeyboardMarkup(
-            keyboard=kb_lekcs,
-            resize_keyboard=True
-        )
-        await message.answer('Выберите предмет', reply_markup=keyboardLekcs)
-#Кнопка Мои оценки    
-@dp.message_handler(text = 'Мои оценки')
-async def command_ocenki(message: types.Message):
+#         kb_lekcs = [
+#             [
+#                 types.KeyboardButton(text='Математика'),
+#                 types.KeyboardButton(text='Русский язык'), 
+#                 types.KeyboardButton(text='Программирование')
+#             ],
+#             [
+#                 types.KeyboardButton(text='Информатика'),
+#                 types.KeyboardButton(text='1С'),
+#                 types.KeyboardButton(text='Базы данных')
+#             ],
+#             [
+#             types.KeyboardButton(text='Меню')    
+#             ]
+#         ]
+#         keyboardLekcs = types.ReplyKeyboardMarkup(
+#             keyboard=kb_lekcs,
+#             resize_keyboard=True
+#         )
+#         await message.answer('Выберите предмет', reply_markup=keyboardLekcs)
+# #Кнопка Мои оценки    
+# @dp.message_handler(text = 'Мои оценки')
+# async def command_ocenki(message: types.Message):
         
-        kb_ocenki = [
-            [
-                types.KeyboardButton(text='Математика'),
-                types.KeyboardButton(text='Русский язык'), 
-                types.KeyboardButton(text='Программирование')
-            ],
-            [
-                types.KeyboardButton(text='Информатика'),
-                types.KeyboardButton(text='1С'),
-                types.KeyboardButton(text='Базы данных')
-            ],
-            [
-            types.KeyboardButton(text='Меню')    
-            ]
-        ]
-        keyboardOcenki = types.ReplyKeyboardMarkup(
-            keyboard=kb_ocenki,
-            resize_keyboard=True
-        )
-        await message.answer('Выберите предмет', reply_markup=keyboardOcenki)                       
-# Кнопка меню
-@dp.message_handler(text = 'Меню')
-async def menu(message:types.Message):
-    kb = [
-        [types.KeyboardButton(text="Учитель")],
-        [types.KeyboardButton(text="Студент")]
-    ]
-    keyboardStart = types.ReplyKeyboardMarkup(
-        keyboard=kb,
-        resize_keyboard=True
-    )
-    await message.answer('Возвращаю в основное меню', reply_markup=keyboardStart)
+#         kb_ocenki = [
+#             [
+#                 types.KeyboardButton(text='Математика'),
+#                 types.KeyboardButton(text='Русский язык'), 
+#                 types.KeyboardButton(text='Программирование')
+#             ],
+#             [
+#                 types.KeyboardButton(text='Информатика'),
+#                 types.KeyboardButton(text='1С'),
+#                 types.KeyboardButton(text='Базы данных')
+#             ],
+#             [
+#             types.KeyboardButton(text='Меню')    
+#             ]
+#         ]
+#         keyboardOcenki = types.ReplyKeyboardMarkup(
+#             keyboard=kb_ocenki,
+#             resize_keyboard=True
+#         )
+#         await message.answer('Выберите предмет', reply_markup=keyboardOcenki)                       
+# # Кнопка меню
+# @dp.message_handler(text = 'Меню')
+# async def menu(message:types.Message):
+#     kb = [
+#         [types.KeyboardButton(text="Учитель")],
+#         [types.KeyboardButton(text="Студент")]
+#     ]
+#     keyboardStart = types.ReplyKeyboardMarkup(
+#         keyboard=kb,
+#         resize_keyboard=True
+#     )
+#     await message.answer('Возвращаю в основное меню', reply_markup=keyboardStart)
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
