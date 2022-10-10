@@ -23,7 +23,7 @@ try:
             rows = cursor.fetchall()
             s = []
             for row in rows:
-                print(row['name_group'])
+                # print(row['name_group'])
                 s.append(row['name_group'])
             n = []
             for i in s:

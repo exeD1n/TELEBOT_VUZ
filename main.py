@@ -2,7 +2,7 @@ from cgitb import text
 from auth import TOKEN
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, reply_keyboard
-from database import row
+from database import row, n
 
 
 API_TOKEN = TOKEN
@@ -120,25 +120,28 @@ async def send_welcome(message: types.Message):
 # Кнопка 'Студент' 
 @dp.message_handler(text = "Студент")
 async def command_student(message:types.Message):   
-    
-    kb_student = [
-            [
-            types.KeyboardButton(text = 'Мои практические'),
-            types.KeyboardButton(text='Мои лабораторные')
-            ],
-            [
-            types.KeyboardButton(text = 'Список лекций'),
-            types.KeyboardButton(text='Мои оценки')
-            ],
-            [
-            types.KeyboardButton(text='Меню')
-            ]
-    ]   
-    keyboardStudent = types.ReplyKeyboardMarkup(
-        keyboard=kb_student,
-        resize_keyboard=True
-    )
-    await message.answer('Что вас интересует?', reply_markup=keyboardStudent)
+    builder = ReplyKeyboardMarkup()
+    for i in n:
+        builder.add(types.KeyboardButton(text=str(i)))
+        
+    # kb_student = [
+    #         [
+    #         types.KeyboardButton(text = 'Мои практические'),
+    #         types.KeyboardButton(text='Мои лабораторные')
+    #         ],
+    #         [
+    #         types.KeyboardButton(text = 'Список лекций'),
+    #         types.KeyboardButton(text='Мои оценки')
+    #         ],
+    #         [
+    #         types.KeyboardButton(text='Меню')
+    #         ]
+    # ]   
+    # keyboardStudent = types.ReplyKeyboardMarkup(
+    #     keyboard=kb_student,
+    #     resize_keyboard=True
+    # )
+    await message.answer('Что вас интересует?', reply_markup=builder)
 #Кнопка Мои практические    
 @dp.message_handler(text = 'Мои практические')
 async def command_praks(message: types.Message):
