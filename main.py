@@ -2,7 +2,7 @@ from cgitb import text
 from auth import TOKEN
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, reply_keyboard
-from database import n
+from database import name_group, name_subject
 
 
 API_TOKEN = TOKEN
@@ -122,7 +122,7 @@ async def send_welcome(message: types.Message):
 @dp.message_handler(text = "Студент")
 async def command_student(message:types.Message):   
     builder = ReplyKeyboardMarkup()
-    for i in n:
+    for i in name_group:
         builder.add(types.KeyboardButton(text=str(i)))
     builder.add(types.KeyboardButton(text='Меню'))
         
@@ -147,10 +147,13 @@ async def command_student(message:types.Message):
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    stay = ''
-    for i in n:
+    builder = ReplyKeyboardMarkup()
+    for i in name_group:
         if message.text == i:
-            await message.reply("ХУЙ")
+            for k, v in name_subject:
+                builder.add(types.KeyboardButton(text=str(v)))
+            builder.add(types.KeyboardButton(text='Меню'))
+            await message.reply('Выберете предмет', reply_markup=builder)
 
     # elif message.text == 'Студент':
     #     await message.reply("", reply_markup=types.ReplyKeyboardRemove())

@@ -36,10 +36,11 @@ try:
             cursor.execute(select_name_grup)
             rows = cursor.fetchall()
             name_subject = {}
-            i = 1
             for row in rows:
-                print(row['Subject'])
-                    
+                key, value = row['idSubject'], row['Subject']
+                name_subject[key] = value
+            print(name_subject)    
+            
     finally:
         connection.close()
 
