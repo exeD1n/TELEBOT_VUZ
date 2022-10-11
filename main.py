@@ -2,7 +2,7 @@ from cgitb import text
 from auth import TOKEN
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, reply_keyboard
-from database import row, n
+from database import n
 
 
 API_TOKEN = TOKEN
@@ -10,6 +10,7 @@ API_TOKEN = TOKEN
 # Инициальзация бота
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
+
 
 
 # Приветствие пользователя
@@ -123,6 +124,7 @@ async def command_student(message:types.Message):
     builder = ReplyKeyboardMarkup()
     for i in n:
         builder.add(types.KeyboardButton(text=str(i)))
+    builder.add(types.KeyboardButton(text='Меню'))
         
     # kb_student = [
     #         [
@@ -142,24 +144,33 @@ async def command_student(message:types.Message):
     #     resize_keyboard=True
     # )
     await message.answer('В какой группе вы учитесь?', reply_markup=builder)
-    
+
+@dp.message_handler()
+async def echo(message: types.Message):
+    stay = ''
+    for i in n:
+        if message.text == i:
+            await message.reply("ХУЙ")
+
+    # elif message.text == 'Студент':
+    #     await message.reply("", reply_markup=types.ReplyKeyboardRemove())
     
 #Кнопка Мои практические    
-@dp.message_handler(text = 'Мои практические')
-async def command_praks(message: types.Message):
-        kb_praktics = [
-            [
-                types.KeyboardButton(text='Список работ')
-            ],
-            [
-            types.KeyboardButton(text='Меню')    
-            ]
-        ]
-        keyboardPaktics = types.ReplyKeyboardMarkup(
-            keyboard=kb_praktics,
-            resize_keyboard=True
-        )
-        await message.answer('Что вы хотите сделать', reply_markup=keyboardPaktics)
+# @dp.message_handler(text = stay)
+# async def command_praks(message: types.Message):
+#         kb_praktics = [
+#             [
+#                 types.KeyboardButton(text='Список работ')
+#             ],
+#             [
+#             types.KeyboardButton(text='Меню')    
+#             ]
+#         ]
+#         keyboardPaktics = types.ReplyKeyboardMarkup(
+#             keyboard=kb_praktics,
+#             resize_keyboard=True
+#         )
+#         await message.answer('Что вы хотите сделать', reply_markup=keyboardPaktics)
 # #Кнопка Мои лабораторные    
 # @dp.message_handler(text = 'Мои лабораторные')
 # async def command_labs(message: types.Message):
@@ -225,17 +236,17 @@ async def command_praks(message: types.Message):
 #         )
 #         await message.answer('Выберите предмет', reply_markup=keyboardOcenki)                       
 # # Кнопка меню
-# @dp.message_handler(text = 'Меню')
-# async def menu(message:types.Message):
-#     kb = [
-#         [types.KeyboardButton(text="Учитель")],
-#         [types.KeyboardButton(text="Студент")]
-#     ]
-#     keyboardStart = types.ReplyKeyboardMarkup(
-#         keyboard=kb,
-#         resize_keyboard=True
-#     )
-#     await message.answer('Возвращаю в основное меню', reply_markup=keyboardStart)
+@dp.message_handler(text = 'Меню')
+async def menu(message:types.Message):
+    kb = [
+        [types.KeyboardButton(text="Учитель")],
+        [types.KeyboardButton(text="Студент")]
+    ]
+    keyboardStart = types.ReplyKeyboardMarkup(
+        keyboard=kb,
+        resize_keyboard=True
+    )
+    await message.answer('Возвращаю в основное меню', reply_markup=keyboardStart)
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
