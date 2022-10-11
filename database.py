@@ -1,4 +1,3 @@
-# Подключение к базе данных
 import pymysql
 
 mySQLServer = 'localhost'
@@ -21,15 +20,15 @@ try:
             select_name_grup = "SELECT * FROM Rating;"
             cursor.execute(select_name_grup)
             rows = cursor.fetchall()
-            s = []
+            all_name_group = [] # Список всех групп
             for row in rows:
-                # print(row['name_group'])
-                s.append(row['name_group'])
+                all_name_group.append(row['name_group'])
             name_group = []
-            for i in s:
+            for i in all_name_group:
                 if i not in name_group:
-                    name_group.append(i)
+                    name_group.append(i)       
             print(name_group)
+            
             
         with connection.cursor() as cursor:
             select_name_grup = "SELECT * FROM Subject;"
@@ -40,6 +39,7 @@ try:
                 key, value = row['idSubject'], row['Subject']
                 name_subject[key] = value
             print(name_subject)    
+               
             
     finally:
         connection.close()
