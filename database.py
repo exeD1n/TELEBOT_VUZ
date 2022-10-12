@@ -5,14 +5,7 @@ myDataBase = 'PgutyBot'
 user = 'root'
 passwodr = ''
 try:
-    connection = pymysql.connect(
-        host = mySQLServer,
-        port = 3306,
-        database = myDataBase,
-        user = user,
-        password = passwodr,
-        cursorclass = pymysql.cursors.DictCursor
-        )
+    connection = pymysql.connect(host = mySQLServer,port = 3306,database = myDataBase,user = user,password = passwodr,cursorclass = pymysql.cursors.DictCursor)
     print('succesfully conneted')
 
     try:
