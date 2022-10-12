@@ -2,7 +2,6 @@ from cgitb import text
 from auth import TOKEN
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, reply_keyboard
-from database import name_group, name_subject
 import pymysql
 
 # Инициализация DataBase
