@@ -21,6 +21,28 @@ try:
     connection = pymysql.connect(host = mySQLServer,port = 3306,database = myDataBase,user = user,password = passwodr,cursorclass = pymysql.cursors.DictCursor)
     print('succesfully conneted')
     
+    # Все подключения к базе данных, вытаскиваем данные
+    with connection.cursor() as cursor:
+            select_name_grup = "SELECT * FROM Rating;"
+            cursor.execute(select_name_grup)
+            rows = cursor.fetchall()
+            all_name_group = [] # Список всех групп
+            for row in rows:
+                all_name_group.append(row['name_group']) 
+            name_group = [] # Список групп без повторений
+            for i in all_name_group:
+                if i not in name_group:
+                    name_group.append(i)
+                    
+    with connection.cursor() as cursor:
+            select_name_grup = "SELECT * FROM Subject;"
+            cursor.execute(select_name_grup)
+            rows = cursor.fetchall()
+            name_subject = {}
+            for row in rows:
+                key, value = row['idSubject'], row['Subject']
+                name_subject[key] = value   
+    
     # Старт бота и его выбор кнопок
     @dp.message_handler(commands=['start'])
     async def send_welcome(message: types.Message):
@@ -41,7 +63,7 @@ try:
         kb = [
             [
                 types.KeyboardButton(text="Успеваемость"),
-                types.KeyboardButton(text="Лобораторные")
+                types.KeyboardButton(text="Лабораторные")
             ],
             [
                 types.KeyboardButton(text = 'Меню'),
@@ -56,26 +78,29 @@ try:
     # Выбор студентом успеваемости
     @dp.message_handler(text='Успеваемость')
     async def echo(message: types.Message):
-        try:
-            with connection.cursor() as cursor:
-                select_name_grup = "SELECT * FROM Rating;"
-                cursor.execute(select_name_grup)
-                rows = cursor.fetchall()
-                all_name_group = [] # Список всех групп
-                for row in rows:
-                    all_name_group.append(row['name_group'])
-                name_group = [] # Список групп без повторений
-                for i in all_name_group:
-                    if i not in name_group:
-                        name_group.append(i)
-        finally:
-            connection.close() 
         builder = ReplyKeyboardMarkup()
         for i in name_group:
             builder.add(types.KeyboardButton(text=str(i)))
         builder.add(types.KeyboardButton(text='Меню'))
         await message.answer('В какой группе вы учитесь?', reply_markup=builder)
+        
+    @dp.message_handler()
+    async def echo(message: types.Message):
+        builder = ReplyKeyboardMarkup()
+        for i in name_group:
+            if message.text == i:
+                builder = ReplyKeyboardMarkup()
+                for k, j in name_subject.items():        
+                    builder.add(types.KeyboardButton(text=str(j)))
+                builder.add(types.KeyboardButton(text='Меню'))
+                await message.answer(f'Теперь выберете предмет', reply_markup=builder)
+        namesubjectbot = message.text
+        
+
+            
+        
     
+   
 except Exception as ex:
     print('Connection refused')
     print('ex')     

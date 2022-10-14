@@ -15,12 +15,8 @@ try:
             rows = cursor.fetchall()
             all_name_group = [] # Список всех групп
             for row in rows:
-                all_name_group.append(row['name_group'])
-            name_group = []
-            for i in all_name_group:
-                if i not in name_group:
-                    name_group.append(i)       
-            print(name_group)
+                if row['idSubject'] == 2 and row['name_group']=='ИВТ26у':
+                    print(row['link_rating'])
             
             
         with connection.cursor() as cursor:
