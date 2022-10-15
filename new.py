@@ -3,6 +3,7 @@ from auth import TOKEN
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, reply_keyboard
 import pymysql
+from aiogram.dispatcher.filters.state import StatesGroup, State
 
 # Инициализация DataBase
 mySQLServer = 'localhost'
@@ -43,6 +44,9 @@ try:
                 key, value = row['idSubject'], row['Subject']
                 name_subject[key] = value   
     
+    class InputData(StatesGroup):
+        inputgroupname = State()
+    
     # Старт бота и его выбор кнопок
     @dp.message_handler(commands=['start'])
     async def send_welcome(message: types.Message):
@@ -77,27 +81,22 @@ try:
     
     # Выбор студентом успеваемости
     @dp.message_handler(text='Успеваемость')
-    async def echo(message: types.Message):
-        builder = ReplyKeyboardMarkup()
-        for i in name_group:
-            builder.add(types.KeyboardButton(text=str(i)))
-        builder.add(types.KeyboardButton(text='Меню'))
-        await message.answer('В какой группе вы учитесь?', reply_markup=builder)
+    async def group_call(call: types.CallbackQuery):
+        await call.answer()
+        await call.message.answer("Напишите в какой группе вы учитесь")
+        await InputData.inputgroupname.set()
+        
+    @dp.message_handler(state=InputData.inputgroupname)
+    async def fio_input(message: types.Message):
+        await message.answer(f"Вы учитесь в группе - {message.text}")   
         
     @dp.message_handler()
     async def echo(message: types.Message):
         builder = ReplyKeyboardMarkup()
-        for i in name_group:
-            if message.text == i:
-                builder = ReplyKeyboardMarkup()
-                for k, j in name_subject.items():        
-                    builder.add(types.KeyboardButton(text=str(j)))
-                builder.add(types.KeyboardButton(text='Меню'))
-                await message.answer(f'Теперь выберете предмет', reply_markup=builder)
-        namesubjectbot = message.text
-        
-
-            
+        for k, j in name_subject.items():        
+            builder.add(types.KeyboardButton(text=str(j)))
+        builder.add(types.KeyboardButton(text='Меню'))
+        await message.answer(f'Теперь выберете предмет', reply_markup=builder)
         
     
    
