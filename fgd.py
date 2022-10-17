@@ -70,7 +70,7 @@ try:
     @dp.callback_query_handler(text="lab_input_teacher_add")
     async def add_lab_call(call: types.CallbackQuery):
         await call.answer()
-        await call.message.answer("Напишите нужный что вы хотите добавить\n\nПример: Математика, Решение массивных уравнений, практика", reply_markup=types.ReplyKeyboardRemove())
+        await call.message.answer("Напишите нужный что вы хотите добавить\n\nПример: Математика, Решение массивных уравнений, практика, ссылка на задание", reply_markup=types.ReplyKeyboardRemove())
         await InputData.input_teacher_add.set()
     
     # 1 Input    
