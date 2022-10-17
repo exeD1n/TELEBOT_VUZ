@@ -29,6 +29,7 @@ try:
         input_group = State()
         input_subject = State()
         input_lab = State()
+        input_teacher_add = State()
 
     @dp.message_handler(commands=['start'])
     async def send_welcome(message: types.Message):
@@ -47,9 +48,9 @@ try:
         if message.text == "Студент":
             markup = InlineKeyboardMarkup().add(InlineKeyboardButton("Успеваемость", callback_data="group_input")).add(InlineKeyboardButton("Практика", callback_data="lab_input"))
             await message.answer("Выберет что вам нужно", reply_markup=markup)
-        # if message.text == "Учитель":
-        #     markup = InlineKeyboardMarkup().add(InlineKeyboardButton("Измен. успеваемость", callback_data="group_input")).add(InlineKeyboardButton("Практика", callback_data="lab_input"))
-        #     await message.answer("Нажмите на кнопку\nчто бы вписать группу", reply_markup=markup)
+        if message.text == "Учитель":
+            markup = InlineKeyboardMarkup().add(InlineKeyboardButton("Посмотреть\изменить успеваемость", callback_data="group_input")).add(InlineKeyboardButton("Изменить лабораторную работу", callback_data="lab_input_teacher_change")).add(InlineKeyboardButton("Добавить лабораторную работу", callback_data="lab_input_teacher_add"))
+            await message.answer("Выберет что вам нужно", reply_markup=markup)
 
     @dp.callback_query_handler(text="group_input")
     async def group_call(call: types.CallbackQuery):
@@ -62,9 +63,21 @@ try:
         await call.answer()
         await call.message.answer("Напишите нужный вам предмет\nи название работы\nПример: Русский практика", reply_markup=types.ReplyKeyboardRemove())
         await InputData.input_lab.set()
+    
+    @dp.callback_query_handler(text="lab_input_teacher_add")
+    async def add_lab_call(call: types.CallbackQuery):
+        await call.answer()
+        await call.message.answer("Напишите нужный что вы хотите добавить\n\nПример: Математика, Решение массивных уравнений, практика", reply_markup=types.ReplyKeyboardRemove())
+        await InputData.input_teacher_add.set()
+    
+    @dp.message_handler(state=InputData.input_teacher_add)
+    async def add_lab_input(message: types.Message):
+        group_subject_info = message.text.lower().split(",")
+        await message.answer(f"Предмет - {group_subject_info[0]}\n\nНазвание работы - {group_subject_info[1]}\n\nЗначение работы - {group_subject_info[2]}\n\nСсылка на работу - {group_subject_info[3]}\n\nВы добавили новую работу для студента")
         
     @dp.message_handler(state=InputData.input_group)
     async def group_input(message: types.Message):
+        
         group_subject_info = message.text.lower().split(" ")
         
         with connection.cursor() as cursor:
@@ -122,6 +135,7 @@ try:
             name_prack = k
             linkPractick = j
             await message.answer(f"Выбранный вами предмет - {subject_lab_info[0]}\n\nНазвание данной работы: {str(name_prack).title()}\n\n{subject_lab_info[1].title()} по ссылке: {linkPractick}")
+    
     
     """Обработчик запуска бота"""   
     if __name__ == '__main__':
