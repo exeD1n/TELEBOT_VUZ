@@ -185,6 +185,12 @@ try:
             if j == group_subject_info[0]:
                 idsubject = k
 
+        with connection.cursor() as cursor:
+            delete_record = f"DELETE FROM `LabPractick` WHERE `idSubject` = {idsubject} and `namePractick` = {group_subject_info[1]};"
+            cursor.execute(delete_record)
+            connection.commit()
+            print('вы удалили хуйню')
+
         
 
 
