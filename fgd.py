@@ -30,11 +30,12 @@ try:
         input_subject = State()
         input_lab = State()
         input_teacher_add = State()
+        input_teacher_chenge = State()
 
     @dp.message_handler(commands=['start'])
     async def send_welcome(message: types.Message):
         kb = [
-            [types.KeyboardButton(text="Учитель")],
+            [types.KeyboardButton(text="Преподаватель")],
             [types.KeyboardButton(text="Студент")]
         ]
         keyboardStart = types.ReplyKeyboardMarkup(
@@ -48,7 +49,7 @@ try:
         if message.text == "Студент":
             markup = InlineKeyboardMarkup().add(InlineKeyboardButton("Успеваемость", callback_data="group_input")).add(InlineKeyboardButton("Практика", callback_data="lab_input"))
             await message.answer("Выберет что вам нужно", reply_markup=markup)
-        if message.text == "Учитель":
+        if message.text == "Преподаватель":
             markup = InlineKeyboardMarkup().add(InlineKeyboardButton("Посмотреть\изменить успеваемость", callback_data="group_input")).add(InlineKeyboardButton("Изменить лабораторную работу", callback_data="lab_input_teacher_change")).add(InlineKeyboardButton("Добавить лабораторную работу", callback_data="lab_input_teacher_add"))
             await message.answer("Выберет что вам нужно", reply_markup=markup)
 
@@ -72,7 +73,12 @@ try:
         await call.answer()
         await call.message.answer("Напишите нужный что вы хотите добавить\n\nПример: Математика, Решение массивных уравнений, практика, ссылка на задание", reply_markup=types.ReplyKeyboardRemove())
         await InputData.input_teacher_add.set()
-    
+    # 4 Call
+    @dp.callback_query_handler(text="lab_input_teacher_change")
+    async def add_lab_call(call: types.CallbackQuery):
+        await call.answer()
+        await call.message.answer("Напишите нужный что вы хотите изменить\n\nПример: Математика, Решение массивных уравнений, практика, ссылка на задание", reply_markup=types.ReplyKeyboardRemove())
+        await InputData.input_teacher_chenge.set()
     # 1 Input    
     @dp.message_handler(state=InputData.input_group)
     async def group_input(message: types.Message):
@@ -158,8 +164,31 @@ try:
             add_record = f"INSERT INTO `LabPractick` (`idSubject`, `LabOrPrack`, `namePractick`, `linkPractick`) VALUES ('{idsubject}', '{group_subject_info[2]}', '{group_subject_info[1]}', '{group_subject_info[3]}');"
             cursor.execute(add_record)
             connection.commit()
-        # await message.answer(f"Предмет - {group_subject_info[0]}\n\nНазвание работы - {group_subject_info[1]}\n\nЗначение работы - {group_subject_info[2]}\n\nСсылка на работу - {group_subject_info[3]}\n\nВы добавили новую работу для студента")
-    
+        await message.answer(f"Предмет - {group_subject_info[0]}\n\nНазвание работы - {group_subject_info[1]}\n\nЗначение работы - {group_subject_info[2]}\n\nСсылка на работу - {group_subject_info[3]}\n\nВы добавили новую работу для студента")
+    # input 4
+    @dp.message_handler(state=InputData.input_teacher_chenge)
+    async def change_lab(message: types.Message):
+        group_subject_info = message.text.lower().split(",")
+        # поиск по id предмета и по названию лаба1, лаба2...
+        # print(group_subject_info)
+        with connection.cursor() as cursor:
+            with connection.cursor() as cursor:
+                select_name_grup = "SELECT * FROM Subject;"
+                cursor.execute(select_name_grup)
+                rows = cursor.fetchall()            
+                name_subject = {}
+                for row in rows:
+                    key, value = row['idSubject'], row['Subject']
+                    name_subject[key] = value  
+        
+        for k, j in name_subject.items():
+            if j == group_subject_info[0]:
+                idsubject = k
+
+        
+
+
+
     """Обработчик запуска бота"""   
     if __name__ == '__main__':
         executor.start_polling(dp, skip_updates=True)
